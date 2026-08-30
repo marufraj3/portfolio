@@ -46,8 +46,10 @@ export default function AvatarPoster() {
           style={{
             background:
               "conic-gradient(from 0deg, transparent 0deg, rgba(79,215,255,0.55) 60deg, transparent 130deg, transparent 230deg, rgba(139,124,255,0.45) 300deg, transparent 360deg)",
-            maskImage: "radial-gradient(circle, transparent 63%, #000 64%, #000 66%, transparent 67%)",
-            WebkitMaskImage: "radial-gradient(circle, transparent 63%, #000 64%, #000 66%, transparent 67%)",
+            // Ring sits at ~52–55% of the box: orbiting just OUTSIDE the
+            // border (which ends at 50%) so the beam never washes it out.
+            maskImage: "radial-gradient(circle, transparent 66%, #000 67%, #000 69%, transparent 70%)",
+            WebkitMaskImage: "radial-gradient(circle, transparent 66%, #000 67%, #000 69%, transparent 70%)",
           }}
         />
 
@@ -97,7 +99,7 @@ export default function AvatarPoster() {
           placeholder="blur"
           blurDataURL={BLUR}
           sizes="(max-width: 1024px) 78vw, 520px"
-          className="relative size-full rounded-[10px] border-2 border-white/30 object-cover"
+          className="relative size-full rounded-[10px] border-2 border-white/60 object-cover"
         />
       </div>
     </div>
