@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  // Dev-server preview is proxied through an external sandbox host.
+  allowedDevOrigins: ["*.e2b.app"],
+
   images: {
     formats: ["image/avif", "image/webp"],
     // The avatar + artwork never render above ~520px, so cap the srcset
