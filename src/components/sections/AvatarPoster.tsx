@@ -8,8 +8,9 @@ const BLUR =
 
 const rand = seeded(97531);
 const dots = Array.from({ length: 22 }, (_, i) => ({
-  angle: (i / 22) * 360 + rand() * 10,
-  radius: 52 + rand() * 26,
+  // Orbit radius: this far beyond the frame edge, as % of the box,
+  // so the particles are visible around the portrait at every size.
+  offset: 4 + rand() * 10,
   size: 2 + rand() * 3.5,
   duration: 14 + rand() * 18,
   delay: -rand() * 20,
@@ -18,16 +19,14 @@ const dots = Array.from({ length: 22 }, (_, i) => ({
 }));
 
 /**
- * Zero-JS-cost avatar presentation: real image + CSS-composited neon rings
- * and orbiting particles. Used as the LCP paint and as the full experience
- * on touch / low-power devices where WebGL isn't worth the battery.
+ * Avatar presentation: the circular portrait over its animated
+ * background (ambient halo, rim light sweep, orbit ring + particles),
+ * with no border/frame around it. Nothing sits on the portrait
+ * itself, and the page background shows through the corners.
  */
-export default function AvatarPoster({ dim = false }: { dim?: boolean }) {
+export default function AvatarPoster() {
   return (
-    <div
-      className="absolute inset-0 grid place-items-center transition-opacity duration-[900ms] ease-[cubic-bezier(.16,1,.3,1)]"
-      style={{ opacity: dim ? 0 : 1 }}
-    >
+    <div className="absolute inset-0 grid place-items-center">
       <div className="relative aspect-square w-[78%] max-w-[520px]">
         {/* Ambient halo */}
         <div
@@ -46,6 +45,7 @@ export default function AvatarPoster({ dim = false }: { dim?: boolean }) {
           style={{
             background:
               "conic-gradient(from 0deg, transparent 0deg, rgba(79,215,255,0.55) 60deg, transparent 130deg, transparent 230deg, rgba(139,124,255,0.45) 300deg, transparent 360deg)",
+            // Ring hugs the portrait rim (~50–53% of the box), like the original.
             maskImage: "radial-gradient(circle, transparent 63%, #000 64%, #000 66%, transparent 67%)",
             WebkitMaskImage: "radial-gradient(circle, transparent 63%, #000 64%, #000 66%, transparent 67%)",
           }}
@@ -63,27 +63,22 @@ export default function AvatarPoster({ dim = false }: { dim?: boolean }) {
           {dots.map((d, i) => (
             <span
               key={i}
-              className="absolute left-1/2 top-1/2 motion-safe:animate-[spin_var(--dur)_linear_infinite]"
+              className="absolute inset-0 motion-safe:animate-[spin_var(--dur)_linear_infinite]"
               style={{
                 ["--dur" as string]: `${d.duration}s`,
                 animationDelay: `${d.delay}s`,
                 animationDirection: d.reverse ? "reverse" : "normal",
-                width: 0,
-                height: 0,
-                transform: `rotate(${d.angle}deg)`,
               }}
             >
               <span
-                className="absolute block rounded-full"
+                className="absolute left-1/2 block rounded-full"
                 style={{
+                  top: `-${d.offset}%`,
                   width: d.size,
                   height: d.size,
                   background: d.color,
                   boxShadow: `0 0 ${d.size * 3}px ${d.color}`,
-                  transform: `translate(-50%,-50%) translateY(-${d.radius}%)`,
-                  top: 0,
-                  left: 0,
-                  marginTop: `-${d.radius * 2.2}px`,
+                  transform: "translate(-50%, -50%)",
                   opacity: 0.85,
                 }}
               />
@@ -91,7 +86,7 @@ export default function AvatarPoster({ dim = false }: { dim?: boolean }) {
           ))}
         </div>
 
-        {/* Portrait */}
+        {/* Portrait — circular photo inside the framed animated backdrop */}
         <Image
           src="/avatar-circle.webp"
           alt="Portrait of Maruf Ahmed Raj, web developer and digital marketer"
@@ -102,14 +97,7 @@ export default function AvatarPoster({ dim = false }: { dim?: boolean }) {
           placeholder="blur"
           blurDataURL={BLUR}
           sizes="(max-width: 1024px) 78vw, 520px"
-          className="relative size-full rounded-full object-cover"
-        />
-
-        {/* Rim + inner shadow */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-cyan-neon/25"
-          style={{ boxShadow: "inset 0 0 60px rgba(4,5,10,0.65), 0 0 80px -20px rgba(79,215,255,0.55)" }}
+          className="relative size-full rounded-[10px] object-cover"
         />
       </div>
     </div>
