@@ -21,9 +21,8 @@ const dots = Array.from({ length: 22 }, (_, i) => ({
 /**
  * Avatar presentation: the circular portrait over its animated
  * background (ambient halo, rim light sweep, orbit ring + particles),
- * all framed by a subtle border with a 10px radius. Nothing sits on
- * the portrait itself, and there is no black backdrop behind it —
- * the page background and the animations show through the corners.
+ * with no border/frame around it. Nothing sits on the portrait
+ * itself, and the page background shows through the corners.
  */
 export default function AvatarPoster() {
   return (
@@ -46,10 +45,9 @@ export default function AvatarPoster() {
           style={{
             background:
               "conic-gradient(from 0deg, transparent 0deg, rgba(79,215,255,0.55) 60deg, transparent 130deg, transparent 230deg, rgba(139,124,255,0.45) 300deg, transparent 360deg)",
-            // Ring sits at ~52–55% of the box: orbiting just OUTSIDE the
-            // border (which ends at 50%) so the beam never washes it out.
-            maskImage: "radial-gradient(circle, transparent 66%, #000 67%, #000 69%, transparent 70%)",
-            WebkitMaskImage: "radial-gradient(circle, transparent 66%, #000 67%, #000 69%, transparent 70%)",
+            // Ring hugs the portrait rim (~50–53% of the box), like the original.
+            maskImage: "radial-gradient(circle, transparent 63%, #000 64%, #000 66%, transparent 67%)",
+            WebkitMaskImage: "radial-gradient(circle, transparent 63%, #000 64%, #000 66%, transparent 67%)",
           }}
         />
 
@@ -99,7 +97,7 @@ export default function AvatarPoster() {
           placeholder="blur"
           blurDataURL={BLUR}
           sizes="(max-width: 1024px) 78vw, 520px"
-          className="relative size-full rounded-[10px] border-2 border-white/60 object-cover"
+          className="relative size-full rounded-[10px] object-cover"
         />
       </div>
     </div>
