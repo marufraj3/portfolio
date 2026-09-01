@@ -22,7 +22,13 @@ function CaseStudyRow({ project, index }: { project: Project; index: number }) {
           <div className={flip ? "lg:order-2" : ""}>
             <Tilt max={6} scale={1.008} className="aspect-16/11 w-full">
               <div className="size-full overflow-hidden rounded-[22px] border border-white/[0.07]">
-                <ProjectVisual accent={project.accent} variant={index + 1} label={project.title} />
+                <ProjectVisual
+                  accent={project.accent}
+                  variant={index + 1}
+                  label={project.title}
+                  image={project.image}
+                  screenshot={project.screenshot}
+                />
               </div>
             </Tilt>
           </div>
@@ -81,7 +87,20 @@ function CaseStudyRow({ project, index }: { project: Project; index: number }) {
               ))}
             </ul>
 
-            <CaseStudyDisclosure project={project} />
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              {project.demoLink && (
+                <ButtonLink
+                  href={project.demoLink}
+                  external
+                  variant="primary"
+                  size="sm"
+                  icon={<ArrowIcon />}
+                >
+                  লাইভ ডেমো
+                </ButtonLink>
+              )}
+              <CaseStudyDisclosure project={project} />
+            </div>
           </div>
         </div>
       </GlassCard>
@@ -95,7 +114,13 @@ function MiniCard({ project, index }: { project: Project; index: number }) {
       <Tilt max={7} className="h-full">
         <GlassCard className="flex h-full flex-col overflow-hidden p-5">
           <div className="aspect-16/10 w-full overflow-hidden rounded-2xl border border-white/[0.07]">
-            <ProjectVisual accent={project.accent} variant={index + 21} label={project.title} />
+            <ProjectVisual
+              accent={project.accent}
+              variant={index + 21}
+              label={project.title}
+              image={project.image}
+              screenshot={project.screenshot}
+            />
           </div>
           <div className="mt-5 flex flex-1 flex-col">
             <div className="flex items-center justify-between gap-3">
@@ -119,6 +144,17 @@ function MiniCard({ project, index }: { project: Project; index: number }) {
                 </div>
               ))}
             </div>
+            {project.demoLink && (
+              <a
+                href={project.demoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold"
+                style={{ color: project.accent }}
+              >
+                লাইভ ডেমো ↗
+              </a>
+            )}
           </div>
         </GlassCard>
       </Tilt>

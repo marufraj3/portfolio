@@ -40,7 +40,10 @@
         "href": "https://github.com/marufraj3",
         "handle": "@marufraj3"
       }
-    ]
+    ],
+    "avatar": "/avatar.webp",
+    "avatarCircle": "/avatar-circle.webp",
+    "ogImage": "/og.jpg"
   },
   "nav": [
     {
@@ -293,7 +296,10 @@
         "Tailwind"
       ],
       "accent": "#4fd7ff",
-      "featured": true
+      "featured": true,
+      "demoLink": "",
+      "image": "",
+      "screenshot": ""
     },
     {
       "slug": "restaurant-website",
@@ -324,7 +330,10 @@
         "SEO"
       ],
       "accent": "#8b7cff",
-      "featured": true
+      "featured": true,
+      "demoLink": "",
+      "image": "",
+      "screenshot": ""
     },
     {
       "slug": "meta-ads-campaign",
@@ -355,7 +364,10 @@
         "Analytics"
       ],
       "accent": "#5ff2c0",
-      "featured": true
+      "featured": true,
+      "demoLink": "",
+      "image": "",
+      "screenshot": ""
     },
     {
       "slug": "whatsapp-automation",
@@ -385,7 +397,10 @@
         "WhatsApp API"
       ],
       "accent": "#ff5fa2",
-      "featured": true
+      "featured": true,
+      "demoLink": "",
+      "image": "",
+      "screenshot": ""
     },
     {
       "slug": "smm-panel",
@@ -410,7 +425,10 @@
         "MySQL",
         "API"
       ],
-      "accent": "#4fd7ff"
+      "accent": "#4fd7ff",
+      "demoLink": "",
+      "image": "",
+      "screenshot": ""
     },
     {
       "slug": "corporate-redesign",
@@ -435,7 +453,10 @@
         "Tailwind",
         "SEO"
       ],
-      "accent": "#8b7cff"
+      "accent": "#8b7cff",
+      "demoLink": "",
+      "image": "",
+      "screenshot": ""
     }
   ],
   "services": [

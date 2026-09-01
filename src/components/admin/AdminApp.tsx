@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   ColorInput,
   Field,
+  ImageInput,
   NumberInput,
   Select,
   StringList,
@@ -12,6 +13,7 @@ import {
   TextInput,
   Toggle,
 } from "./ui";
+import MediaManager from "./MediaManager";
 
 /* ============================================================
    Types & helpers
@@ -28,7 +30,8 @@ type FieldType =
   | "select"
   | "tags"
   | "lines"
-  | "object-list";
+  | "object-list"
+  | "image";
 
 interface FieldDef {
   key: string;
@@ -45,7 +48,7 @@ interface SectionDef {
   id: string;
   title: string;
   emoji: string;
-  kind: "object" | "list";
+  kind: "object" | "list" | "media";
   bindKey?: string; // key in root data ("site", "about", "" = root)
   fields?: FieldDef[]; // kind: object
   itemFields?: FieldDef[]; // kind: list
@@ -92,6 +95,9 @@ const SECTIONS: SectionDef[] = [
       { key: "whatsapp", label: "WhatsApp লিংক", type: "text" },
       { key: "facebook", label: "Facebook লিংক", type: "text" },
       { key: "resume", label: "Resume ফাইল পাথ", type: "text" },
+      { key: "avatar", label: "About ছবি (বড় পোর্ট্রেট)", type: "image", full: true },
+      { key: "avatarCircle", label: "হিরো ছবি (গোলাকার পোর্ট্রেট)", type: "image", full: true },
+      { key: "ogImage", label: "Share/OG ছবি (1200×630)", type: "image", full: true },
       {
         key: "socials",
         label: "সোশ্যাল লিংক",
@@ -105,6 +111,12 @@ const SECTIONS: SectionDef[] = [
         ],
       },
     ],
+  },
+  {
+    id: "media",
+    title: "Media / ছবি",
+    emoji: "🖼️",
+    kind: "media",
   },
   {
     id: "nav",
@@ -233,6 +245,9 @@ const SECTIONS: SectionDef[] = [
       { key: "challenge", label: "Challenge", type: "textarea", full: true, rows: 2 },
       { key: "solution", label: "Solution", type: "textarea", full: true, rows: 2 },
       { key: "stack", label: "টেক স্ট্যাক", type: "tags", full: true },
+      { key: "demoLink", label: "Demo লিংক (Live URL)", type: "text", full: true },
+      { key: "image", label: "প্রজেক্ট ছবি / Cover", type: "image", full: true },
+      { key: "screenshot", label: "Screenshot (কেস স্টাডির ভেতরে)", type: "image", full: true },
       { key: "accent", label: "Accent রঙ", type: "color" },
       { key: "featured", label: "Featured", type: "bool" },
       {
@@ -336,6 +351,8 @@ function FieldControl({
       return <StringList value={asStrArr(value)} onChange={onChange} addLabel="যোগ" />;
     case "lines":
       return <StringList value={asStrArr(value)} onChange={onChange} multiline addLabel="প্যারাগ্রাফ" />;
+    case "image":
+      return <ImageInput value={asStr(value)} onChange={onChange} hint="প্রিভিউ" />;
     case "object-list":
       return (
         <ObjectListEditor
@@ -520,6 +537,10 @@ export default function AdminApp({ initial, meta }: { initial: unknown; meta: Ad
   }
 
   function renderSection() {
+    if (current.kind === "media") {
+      return <MediaManager />;
+    }
+
     if (current.kind === "object") {
       const bind = current.bindKey ?? "";
       const dict = bind ? asDict(data[bind]) : data;

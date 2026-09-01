@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 
 /* ============================================================
    Small form primitives for the admin panel
@@ -173,6 +173,91 @@ export function Select({
 /* ============================================================
    String list editor (tags / lines)
    ============================================================ */
+
+/** Image field: paste a URL or upload a new one from disk. */
+export function ImageInput({
+  value,
+  onChange,
+  hint,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  hint?: string;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function upload(file: File) {
+    setBusy(true);
+    setError(null);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/media", { method: "POST", body: fd });
+      const json = (await res.json()) as {
+        ok?: boolean;
+        url?: string;
+        media?: { url?: string };
+        error?: string;
+      };
+      if (!res.ok || !json.ok) {
+        setError(json.error || "আপলোড করা যায়নি।");
+        return;
+      }
+      onChange(json.media?.url || json.url || "");
+    } catch {
+      setError("নেটওয়ার্ক সমস্যা — আবার চেষ্টা করুন।");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      {value ? (
+        <div className="relative overflow-hidden rounded-lg border border-white/10 bg-ink-900/60">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={value} alt="" className="h-32 w-full object-cover" />
+          {hint && <span className="absolute inset-x-0 bottom-0 bg-black/60 px-2 py-1 text-[10px] text-fog-300">{hint}</span>}
+        </div>
+      ) : (
+        <div className="grid h-24 place-items-center rounded-lg border border-dashed border-white/15 text-[11px] text-fog-400">
+          ছবি নেই — URL লিখুন বা আপলোড করুন
+        </div>
+      )}
+      <div className="flex gap-1.5">
+        <input
+          type="text"
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="/uploads/... বা https://..."
+          className={inputCls}
+        />
+        <input
+          ref={ref}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) upload(file);
+            e.currentTarget.value = "";
+          }}
+        />
+        <button
+          type="button"
+          disabled={busy}
+          onClick={() => ref.current?.click()}
+          className="shrink-0 rounded-lg border border-cyan-neon/40 bg-cyan-neon/10 px-3 py-2 text-xs font-semibold text-cyan-neon transition-colors hover:bg-cyan-neon/20 disabled:opacity-50"
+        >
+          {busy ? "আপলোড…" : "আপলোড"}
+        </button>
+      </div>
+      {error && <p className="text-[11px] text-red-300">{error}</p>}
+    </div>
+  );
+}
 
 export function StringList({
   value,

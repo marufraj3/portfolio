@@ -27,7 +27,17 @@ export type SiteInfo = {
   facebook: string;
   resume: string;
   availability: string;
+  avatar?: string;
+  avatarCircle?: string;
+  ogImage?: string;
   socials: Social[];
+};
+
+export type MediaFile = {
+  name: string;
+  url: string;
+  size: number;
+  type: string;
 };
 
 export const site = content.site as SiteInfo;
@@ -74,6 +84,9 @@ export type Project = {
   stack: string[];
   accent: string;
   featured?: boolean;
+  demoLink?: string;
+  image?: string;
+  screenshot?: string;
 };
 
 export const projects = content.projects as Project[];
