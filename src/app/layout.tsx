@@ -70,13 +70,13 @@ export const metadata: Metadata = {
     description,
     siteName: site.name,
     locale: "en_US",
-    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: site.name }],
+    images: [{ url: site.ogImage || "/og.jpg", width: 1200, height: 630, alt: site.name }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.name} — Web Developer & Digital Marketer`,
     description,
-    images: ["/og.jpg"],
+    images: [site.ogImage || "/og.jpg"],
   },
   robots: {
     index: true,

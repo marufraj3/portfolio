@@ -10,9 +10,19 @@
 
 ## কী কী edit করা যায়
 
-General/Profile (নাম, যোগাযোগ, সোশ্যাল লিংক), Navigation, About, Stats, Skills,
-Services, Projects, Testimonials, Process ধাপ, FAQ এবং Marquee — সব কিছু add/remove/
+General/Profile (নাম, যোগাযোগ, সোশ্যাল লিংক, About ছবি, হিরো ছবি, OG ছবি), Media/
+ছবি লাইব্রেরি, Navigation, About, Stats, Skills, Services, Projects (demo লিংক,
+ছবি, screenshot), Testimonials, Process ধাপ, FAQ এবং Marquee — সব কিছু add/remove/
 reorder সহ।
+
+## Media / ছবি
+
+- `/admin` → **Media / ছবি** ট্যাবে JPG, PNG, WebP, GIF, SVG, AVIF আপলোড /
+  delete / URL কপি করা যায়।
+- আপলোডের ছবি `public/uploads/`-এ সেভ হয় (local), আর Vercel-এ
+  `ADMIN_GITHUB_TOKEN` থাকলে repo-তে commit হয়ে redeploy পর লাইভ হয়।
+- প্রজেক্টে **ছবি / Cover**, **Screenshot**, **Demo লিংক** — সব admin থেকে
+  control করা যায়। ছবি না দিলে আগের মতো অ্যাবস্ট্রাক্ট ভিজ্যুয়াল দেখানো হয়।
 
 ## সেভ করলে কী হয়
 

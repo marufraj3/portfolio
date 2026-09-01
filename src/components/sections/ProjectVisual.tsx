@@ -1,18 +1,44 @@
 import { seeded } from "@/lib/utils";
 
 /**
- * Abstract product mock — no stock screenshots, just a themed
- * interface rendered in SVG so it stays crisp and weightless.
+ * Project visual: uses the editable cover/screenshot from the admin
+ * when available, otherwise falls back to the abstract interface mock.
  */
 export default function ProjectVisual({
   accent,
   variant,
   label,
+  image,
+  screenshot,
 }: {
   accent: string;
   variant: number;
   label: string;
+  image?: string;
+  screenshot?: string;
 }) {
+  const src = image || screenshot || "";
+  if (src) {
+    return (
+      <div className="relative size-full overflow-hidden rounded-[22px] bg-ink-900">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={`${label} — project preview`}
+          loading="lazy"
+          className="size-full object-cover"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,rgba(4,5,10,0.55)_100%)]"
+        />
+        <span className="absolute bottom-3 left-3 rounded-md border border-white/15 bg-black/55 px-2.5 py-1 font-mono text-[9px] tracking-[0.16em] text-fog-200 uppercase backdrop-blur">
+          {label}
+        </span>
+      </div>
+    );
+  }
+
   const rand = seeded(variant * 977 + 13);
   const bars = Array.from({ length: 12 }, () => 0.22 + rand() * 0.78);
   const line = Array.from({ length: 14 }, (_, i) => ({

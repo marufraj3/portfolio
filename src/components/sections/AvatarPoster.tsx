@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { seeded } from "@/lib/utils";
+import { site } from "@/lib/site";
 
 const BLUR =
   "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAUABQDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAYDBAUH/8QAJhAAAgIBBAEDBQEAAAAAAAAAAQIDBBEABRIhMQYTQRQiUWFxgf/EABYBAQEBAAAAAAAAAAAAAAAAAAMEAv/EABsRAQACAwEBAAAAAAAAAAAAAAEAAgMRMSFB/9oADAMBAAIRAxEAPwDR3XdKm3xh7T4LdKo7Zj+APJ0oT+p5ZWCVK0ULMeKmVucn6UdD/dJvVdmSzvsyu2VgRUjXPQGASfyST+hphtEEcU8bIuG9ph3+j/dcYuNbsprsbnrEz//Z";
@@ -25,6 +26,9 @@ const dots = Array.from({ length: 22 }, (_, i) => ({
  * itself, and the page background shows through the corners.
  */
 export default function AvatarPoster() {
+  const avatarSrc = site.avatarCircle || "/avatar-circle.webp";
+  const remoteAvatar = /^https?:\/\//i.test(avatarSrc);
+
   return (
     <div className="absolute inset-0 grid place-items-center">
       <div className="relative aspect-square w-[78%] max-w-[520px]">
@@ -87,18 +91,28 @@ export default function AvatarPoster() {
         </div>
 
         {/* Portrait — circular photo inside the framed animated backdrop */}
-        <Image
-          src="/avatar-circle.webp"
-          alt="Portrait of Maruf Ahmed Raj, web developer and digital marketer"
-          width={800}
-          height={800}
-          priority
-          fetchPriority="high"
-          placeholder="blur"
-          blurDataURL={BLUR}
-          sizes="(max-width: 1024px) 78vw, 520px"
-          className="relative size-full rounded-[10px] object-cover"
-        />
+        {remoteAvatar ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={avatarSrc}
+            alt="Portrait of Maruf Ahmed Raj, web developer and digital marketer"
+            loading="eager"
+            className="relative size-full rounded-[10px] object-cover"
+          />
+        ) : (
+          <Image
+            src={avatarSrc}
+            alt="Portrait of Maruf Ahmed Raj, web developer and digital marketer"
+            width={800}
+            height={800}
+            priority
+            fetchPriority="high"
+            placeholder="blur"
+            blurDataURL={BLUR}
+            sizes="(max-width: 1024px) 78vw, 520px"
+            className="relative size-full rounded-[10px] object-cover"
+          />
+        )}
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export default function CaseStudyDisclosure({
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="group/btn mt-6 inline-flex items-center gap-2.5 text-[13px] font-medium text-white transition-colors hover:text-cyan-neon"
+        className="group/btn inline-flex items-center gap-2.5 text-[13px] font-medium text-white transition-colors hover:text-cyan-neon"
       >
         <span className="grid size-7 place-items-center rounded-full border border-white/15 transition-colors group-hover/btn:border-cyan-neon/50">
           <motion.svg
@@ -69,6 +69,23 @@ export default function CaseStudyDisclosure({
                 </p>
               </div>
             </div>
+
+            {project.screenshot && (
+              <div className="mt-5 border-t border-white/[0.07] pt-5">
+                <p className="mb-3 font-mono text-[10px] tracking-[0.2em] text-fog-400 uppercase">
+                  Screenshot
+                </p>
+                <div className="aspect-16/10 w-full overflow-hidden rounded-2xl border border-white/[0.07] bg-ink-900">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.screenshot}
+                    alt={`${project.title} screenshot`}
+                    loading="lazy"
+                    className="size-full object-cover"
+                  />
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
